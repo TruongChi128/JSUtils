@@ -32,3 +32,28 @@ function getRelativePositionOf(xpath, rate) {
     return rPos;
 }
 return getRelativePositionOf("//*[@title='Information']", 0.3);
+
+// search from chrome history then remove all of them
+
+const timer = ms => new Promise(res => setTimeout(res, ms))
+ele = document.querySelector('history-app').shadowRoot.querySelector('history-list')
+while (true) {
+    await timer(1000)
+    items = document.querySelector('history-app').shadowRoot.querySelector('history-list').shadowRoot.querySelectorAll('history-item')
+    for (let i = 0; i < items.length; i++) {
+        item = items.item(i)
+        item.shadowRoot.querySelector('cr-checkbox').click();
+        if (item.hasAttribute("is-card-end")) {
+            break;
+        }
+    }
+    await timer(500)
+    document.querySelector("#history-app").shadowRoot.querySelector("#toolbar").shadowRoot.querySelector("cr-toolbar-selection-overlay").querySelector("cr-button").click()
+    await timer(500)
+    document.querySelector("#history-app").shadowRoot.querySelector("#history").shadowRoot.querySelector("cr-dialog > div > cr-button.action-button").click()
+    await timer(1500)
+    searchResult = document.querySelector('history-app').shadowRoot.querySelector('history-list').shadowRoot.querySelector('#no-results')
+    if (!searchResult.hasAttribute('hidden')) {
+        break;
+    }
+}
