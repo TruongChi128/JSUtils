@@ -57,3 +57,52 @@ while (true) {
         break;
     }
 }
+
+//remove  item listing steam
+
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function waitForElement(selector, timeout = 10000) {
+    const startTime = Date.now();
+    while (Date.now() - startTime < timeout) {
+        const element = document.querySelector(selector);
+        if (element && element.offsetParent !== null && !element.disabled) {
+            return element;
+        }
+        await delay(100); // Poll every 100ms
+    }
+    throw new Error(`Timeout waiting for element ${selector}`);
+}
+
+async function waitForElementToDisappear(selector, timeout = 10000) {
+    const startTime = Date.now();
+    while (Date.now() - startTime < timeout) {
+        const element = document.querySelector(selector);
+        if (!element || element.offsetParent === null) {
+            await delay(300);
+			return;
+        }
+        await delay(100);
+    }
+    throw new Error(`Timeout waiting for element to disappear: ${selector}`);
+}
+
+async function performClicks() {
+    const items = document.querySelectorAll('span.item_market_action_button_contents');
+    for (const item of items) {
+        item.click();
+        console.log("Clicked on item");
+
+        try {
+            const confirmButton = await waitForElement('span#market_removelisting_dialog_accept');
+            confirmButton.click();
+            console.log("Clicked on confirm button");
+        } catch (error) {
+            console.log("Confirm button not found or not clickable!");
+        }
+        await waitForElementToDisappear('span#market_removelisting_dialog_accept');
+    }
+}
+performClicks();
