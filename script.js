@@ -106,3 +106,24 @@ async function performClicks() {
     }
 }
 performClicks();
+
+//remove listing steam slower version
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+async function performClicks() {
+    const items = document.querySelectorAll('span.item_market_action_button_contents');
+    for (const item of items) {
+        item.click();
+        console.log("Clicked on item");
+        await delay(1000);
+        const confirmButton = document.querySelector('span#market_removelisting_dialog_accept');
+        if (confirmButton) {
+            confirmButton.click();
+            await delay(2000);
+        } else {
+            console.log("Confirm button not found!");
+        }
+    }
+}
+performClicks();
