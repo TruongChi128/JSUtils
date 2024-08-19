@@ -1,5 +1,5 @@
 "use strict";var isMac=void 0!==this.navigator&&void 0!==this.navigator.platform&&this.navigator.platform.toUpperCase().indexOf('MAC')>=0;function Robot(o){void 0===o&&(o=null),this.diagram=o}Robot.prototype.initializeEvent=function(o,t){if(t)for(var e in t)'sourceDiagram'!==e&&(o[e]=t[e]),'control'===e&&(isMac?o.alt=t[e]:o[e]=t[e])},Robot.prototype.mouseDown=function(o,t,e,i){if('number'!=typeof o||'number'!=typeof t)throw new Error('Robot.mouseDown first two args must be X,Y numbers');void 0===e&&(e=0);var r=this.diagram;if(i&&i.sourceDiagram&&(r=i.sourceDiagram),r.isEnabled){var n=new go.InputEvent;n.diagram=r,n.documentPoint=new go.Point(o,t),n.viewPoint=r.transformDocToView(n.documentPoint),n.timestamp=e,n.down=!0,this.initializeEvent(n,i),r.lastInput=n,r.firstInput=n.copy(),r.currentTool.doMouseDown()}},Robot.prototype.mouseMove=function(o,t,e,i){if('number'!=typeof o||'number'!=typeof t)throw new Error('Robot.mouseMove first two args must be X,Y numbers');void 0===e&&(e=0);var r=this.diagram;if(i&&i.sourceDiagram&&(r=i.sourceDiagram),r.isEnabled){var n=new go.InputEvent;n.diagram=r,n.documentPoint=new go.Point(o,t),n.viewPoint=r.transformDocToView(n.documentPoint),n.timestamp=e,this.initializeEvent(n,i),r.lastInput=n,r.currentTool.doMouseMove()}},Robot.prototype.mouseUp=function(o,t,e,i){if('number'!=typeof o||'number'!=typeof t)throw new Error('Robot.mouseUp first two args must be X,Y numbers');void 0===e&&(e=0);var r=this.diagram;if(i&&i.sourceDiagram&&(r=i.sourceDiagram),r.isEnabled){var n=new go.InputEvent;n.diagram=r,n.documentPoint=new go.Point(o,t),n.viewPoint=r.transformDocToView(n.documentPoint),n.timestamp=e,n.up=!0,r.firstInput.documentPoint.equals(n.documentPoint)&&(n.clickCount=1),this.initializeEvent(n,i),r.lastInput=n,r.currentTool.doMouseUp()}},Robot.prototype.mouseWheel=function(o,t,e){if('number'!=typeof o)throw new Error('Robot.mouseWheel first arg must be DELTA number');void 0===t&&(t=0);var i=this.diagram;if(i.isEnabled){var r=i.lastInput.copy();r.diagram=i,r.delta=o,r.timestamp=t,this.initializeEvent(r,e),i.lastInput=r,i.currentTool.doMouseWheel()}},Robot.prototype.keyDown=function(o,t,e){if('string'!=typeof o&&'number'!=typeof o)throw new Error('Robot.keyDown first arg must be a string or a number');void 0===t&&(t=0);var i=this.diagram;if(i.isEnabled){var r=i.lastInput.copy();r.diagram=i,'string'==typeof o?r.key=o:'number'==typeof o&&(r.key=String.fromCharCode(o)),r.timestamp=t,r.down=!0,this.initializeEvent(r,e),i.lastInput=r,i.currentTool.doKeyDown()}},Robot.prototype.keyUp=function(o,t,e){if('string'!=typeof o&&'number'!=typeof o)throw new Error('Robot.keyUp first arg must be a string or a number');void 0===t&&(t=0);var i=this.diagram;if(i.isEnabled){var r=i.lastInput.copy();r.diagram=i,'string'==typeof o?r.key=o:'number'==typeof o&&(r.key=String.fromCharCode(o)),r.timestamp=t,r.up=!0,this.initializeEvent(r,e),i.lastInput=r,i.currentTool.doKeyUp()}};
-const diagram = go.Diagram.fromDiv("ebx_WorkflowModelDiagram");
+const diagram = go.Diagram.fromDiv("ebc_WorkflowModelDiagram");
 const robot = new Robot(diagram);
 
 function findNodeByTitle(title) {
@@ -137,11 +137,11 @@ function moveNode(title){
 	return (docLoc2.x - docLoc1.x) + ";"+ (docLoc2.y - docLoc1.y);
 }
 function isGridVisible(){
-    var dia = go.Diagram.fromDiv("ebx_WorkflowModelDiagram");
+    var dia = go.Diagram.fromDiv("ebc_WorkflowModelDiagram");
     return dia.grid.isVisibleObject();
 }
 function getAllNodes(){
-    var dia = go.Diagram.fromDiv("ebx_WorkflowModelDiagram");
+    var dia = go.Diagram.fromDiv("ebc_WorkflowModelDiagram");
 	const nodes = [];
 	for (const data of dia.model.nodeDataArray) {
         var node = dia.findNodeForData(data);
@@ -151,7 +151,7 @@ function getAllNodes(){
 	return nodes;
 }
 function getAllLinks(){
-    var dia = go.Diagram.fromDiv("ebx_WorkflowModelDiagram");
+    var dia = go.Diagram.fromDiv("ebc_WorkflowModelDiagram");
 	const links = [];
 	for (const dt of dia.model.linkDataArray) {
 	    var fNode = dia.findNodeForKey(dt.from);
@@ -168,7 +168,7 @@ function getAllLinks(){
 	return links;
 }
 function getAllLinksWithInforTitle(){
-    var dia = go.Diagram.fromDiv("ebx_WorkflowModelDiagram");
+    var dia = go.Diagram.fromDiv("ebc_WorkflowModelDiagram");
 	const links = [];
 	for (const dt of dia.model.linkDataArray) {
 	    var fNode = dia.findNodeForKey(dt.from);
@@ -185,7 +185,7 @@ function getAllLinksWithInforTitle(){
 	return links;
 }
 function selectAllUserDefinedSteps(){
-    var dia = go.Diagram.fromDiv("ebx_WorkflowModelDiagram");
+    var dia = go.Diagram.fromDiv("ebc_WorkflowModelDiagram");
     dia.nodes.each(node => {
     	if(node.key != 'start' && node.key != 'end' && node.isSelected == false){
     		node.isSelected  = true;
@@ -193,12 +193,12 @@ function selectAllUserDefinedSteps(){
     });
 }
 function isOverviewDiagramExist(){
-	var ovDia = go.Diagram.fromDiv('ebx_WorkflowDiagramOverview');
+	var ovDia = go.Diagram.fromDiv('ebc_WorkflowDiagramOverview');
 	return ovDia != null;
 }
 
 function compareOrder(title, index){
-    var dia = go.Diagram.fromDiv("ebx_WorkflowModelDiagram");
+    var dia = go.Diagram.fromDiv("ebc_WorkflowModelDiagram");
     const nodes = [];
 	for (const data of dia.model.nodeDataArray) {
         var node = dia.findNodeForData(data);
@@ -246,7 +246,7 @@ function getCoordinatesOfNode(nodeTitle){
 }
 
 function findAllNodesByTitle(title) {
-    var dia = go.Diagram.fromDiv("ebx_WorkflowModelDiagram");
+    var dia = go.Diagram.fromDiv("ebc_WorkflowModelDiagram");
     const nodes = [];
     for (const data of diagram.model.nodeDataArray) {
         if (data.title == title){
